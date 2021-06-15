@@ -16,26 +16,24 @@ theta = 0.5
 sigma = 2
 alpha = 0.7
 tau = 2.0
-
 delta = (1-sigma)/(sigma*(alpha-1)-alpha)
 
 ## uniform distribution parameters (0,100)
-phi_upper = 100 # upperbar
-def mu(phi_upper):
-    return(1/phi_upper)# density function
+phi_upper = 50 # upperbar
+
 
 ### Equilibrium conditions
 def equations(p):
     phi_star, phi_star_x, phi_tilde, phi_tilde_x = p
     return (
-        phi_tilde - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star, phi_upper)[0])**(1/(sigma-1)),
-        phi_tilde_x - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star_x, phi_upper)[0])**(1/(sigma-1)),
+        phi_tilde - (integrate.quad(lambda x: 1/(phi_upper - phi_star)*x**(sigma-1), phi_star, phi_upper)[0])**(1/(sigma-1)),
+        phi_tilde_x - (integrate.quad(lambda x: 1/(phi_upper - phi_star_x)*x**(sigma-1), phi_star_x, phi_upper)[0])**(1/(sigma-1)),
         phi_star_x/phi_star - (f_x/f)**(1/delta)*(tau**((sigma-1)/delta)),
-        (1-phi_star/100)*(f*((phi_tilde/phi_star)**delta)-f)+(1-phi_star_x/100)*(f_x*((phi_tilde_x/phi_star_x)**delta)-f_x) - theta*f_e
+        (1-phi_star/phi_upper)*(f*((phi_tilde/phi_star)**delta)-f)+(1-phi_star_x/phi_upper)*(f_x*((phi_tilde_x/phi_star_x)**delta)-f_x) - theta*f_e
     )
 
 ### Solve it
-w, x, y, z =  fsolve(equations, [1,1,1,1])
+w, x, y, z=  fsolve(equations, [1, 1, 1, 1])
 
 ### What are the parameters
 print(equations((w, x, y, z)))
@@ -88,8 +86,8 @@ x = gamma(1.0,2.0)
 def eq_labor_mobility(p):
     phi_star, phi_star_x, phi_tilde, phi_tilde_x = p
     return (
-        phi_tilde - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star, phi_upper)[0])**(1/(sigma-1)),
-        phi_tilde_x - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star_x, phi_upper)[0])**(1/(sigma-1)),
+        phi_tilde - (integrate.quad(lambda x: 1/(phi_upper - phi_star)*x**(sigma-1), phi_star, phi_upper)[0])**(1/(sigma-1)),
+        phi_tilde_x - (integrate.quad(lambda x: 1/(phi_upper - phi_star_x)*x**(sigma-1), phi_star_x, phi_upper)[0])**(1/(sigma-1)),
         (1-phi_star/100)*(1/gamma(phi_star, phi_tilde) - 1)*f + (1-phi_star_x/100)*(1/gamma(phi_star_x, phi_tilde_x) - 1)*f_x - theta*f_e,
         gamma(phi_star_x, phi_star) - tau**(sigma-1)*(f_x/f)
     )
