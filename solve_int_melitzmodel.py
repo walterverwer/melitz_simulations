@@ -67,12 +67,61 @@ plt.xlabel('$\\tau$')
 
 #%% Equilibrium Labor Mobility
 
+### Parameter setup
+f = 1
+f_x = 1
+f_e = 2
+theta = 0.5
+sigma = 2
+alpha = 0.8
+tau = 2.0
+h = 2.0
+e = 1.0
 
+def gamma(a,b):
+    x = (h/a)*(((1-alpha)/alpha))*(h/e)**(1-alpha) + (e/a)*(((1-alpha)/alpha))*(h/e)**alpha
+    y = (h/b)*(((1-alpha)/alpha))*(h/e)**(1-alpha) + (e/b)*(((1-alpha)/alpha))*(h/e)**alpha
+    return (x/y)**(1-sigma)
 
+x = gamma(1.0,2.0)
 
+def eq_labor_mobility(p):
+    phi_star, phi_star_x, phi_tilde, phi_tilde_x = p
+    return (
+        phi_tilde - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star, phi_upper)[0])**(1/(sigma-1)),
+        phi_tilde_x - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star_x, phi_upper)[0])**(1/(sigma-1)),
+        (1-phi_star/100)*(1/gamma(phi_star, phi_tilde) - 1)*f + (1-phi_star_x/100)*(1/gamma(phi_star_x, phi_tilde_x) - 1)*f_x - theta*f_e,
+        gamma(phi_star_x, phi_star) - tau**(sigma-1)*(f_x/f)
+    )
 
+### Solve it
+w, x, y, z =  fsolve(eq_labor_mobility, [1, 1, 1, 1])
 
+### What are the parameters
+print(eq_labor_mobility((w, x, y, z)))
 
+### Plot range of tau with exporting threshold
+t = np.linspace(1,10,50)
+threshold_star_x = np.empty(len(t))
+count=0
+for i in t:
+    f = 1
+    f_x = 1
+    f_e = 2
+    theta = 0.5
+    sigma = 2
+    alpha = 0.8
+    tau = i
+    h = 2.0
+    e = 1.0
+    w, x, y, z =  fsolve(eq_labor_mobility, (1,1,1,1))
+    threshold_star_x[count] = x
+    count += 1
+    
+plt.plot(t,threshold_star_x)
+plt.ylabel('$\\phi^*_x$')
+plt.xlabel('$\\tau$')
+plt.title('Export Threshold Labor Mobility')
 
 
 
