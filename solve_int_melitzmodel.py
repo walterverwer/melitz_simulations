@@ -126,7 +126,6 @@ for i in t:
     count += 1
     
 fig, axs = plt.subplots(2,2)
-fig.subplots_adjust(hspace=0.23)
 axs[0,0].plot(t, op_phi_star)
 axs[0,0].set_ylabel('$\phi^*$',rotation=0, labelpad=11, fontsize=13)
 axs[0,0].set_xlabel('$\\tau$', fontsize=13)
@@ -142,6 +141,7 @@ axs[1,0].set_ylabel('$\\tilde{\phi}$',rotation=0,  labelpad=11, fontsize=13)
 axs[1,1].plot(t, op_phi_tilde_x)
 axs[1,1].set_xlabel('$\\tau$', fontsize=13)
 axs[1,1].set_ylabel('$\\tilde{\phi}_x$',rotation=0, labelpad=11, fontsize=13)
+fig.tight_layout()
 fig.savefig('labor_mobility_sim.pdf')
 
 
