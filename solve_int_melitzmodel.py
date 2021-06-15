@@ -18,6 +18,7 @@ alpha = 0.8
 tau = 2.0
 
 delta = ((sigma*(1-alpha))/(sigma*(1-alpha)+alpha))*(-1/sigma)
+delta = (1-sigma)/(sigma*(1-alpha)-alpha)
 
 ## uniform distribution parameters (0,100)
 phi_upper = 100 # upperbar
@@ -30,7 +31,7 @@ def equations(p):
     return (
         phi_tilde - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star, phi_upper)[0])**(1/(sigma-1)),
         phi_tilde_x - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star_x, phi_upper)[0])**(1/(sigma-1)),
-        phi_star_x/phi_star - (f_x/f)**(1/(delta*(1-sigma)))*(tau**(-1/delta)),
+        phi_star_x/phi_star - (f_x/f)**(1/delta)*(tau**((sigma-1)/delta)),
         (1-phi_star/100)*(f*((phi_tilde/phi_star)**delta)-f)+(1-phi_star_x/100)*(f_x*((phi_tilde_x/phi_star_x)**delta)-f_x) - theta*f_e
     )
 
