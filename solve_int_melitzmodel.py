@@ -11,31 +11,29 @@ import matplotlib.pyplot as plt
 ### Parameter setup
 f = 1
 f_x = 1
-f_e = 10
+f_e = 2
 theta = 0.5
 sigma = 2
-alpha = 0.8
+alpha = 0.7
 tau = 2.0
-
-delta = ((sigma*(1-alpha))/(sigma*(1-alpha)+alpha))*(-1/sigma)
+delta = (1-sigma)/(sigma*(alpha-1)-alpha)
 
 ## uniform distribution parameters (0,100)
-phi_upper = 100 # upperbar
-def mu(phi_upper):
-    return(1/phi_upper)# density function
+phi_upper = 50 # upperbar
+
 
 ### Equilibrium conditions
 def equations(p):
     phi_star, phi_star_x, phi_tilde, phi_tilde_x = p
     return (
-        phi_tilde - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star, phi_upper)[0])**(1/(sigma-1)),
-        phi_tilde_x - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star_x, phi_upper)[0])**(1/(sigma-1)),
-        phi_star_x/phi_star - (f_x/f)**(1/(delta*(1-sigma)))*(tau**(-1/delta)),
-        (1-phi_star/100)*(f*((phi_tilde/phi_star)**delta)-f)+(1-phi_star_x/100)*(f_x*((phi_tilde_x/phi_star_x)**delta)-f_x) - theta*f_e
+        phi_tilde - (integrate.quad(lambda x: 1/(phi_upper - phi_star)*x**(sigma-1), phi_star, phi_upper)[0])**(1/(sigma-1)),
+        phi_tilde_x - (integrate.quad(lambda x: 1/(phi_upper - phi_star_x)*x**(sigma-1), phi_star_x, phi_upper)[0])**(1/(sigma-1)),
+        phi_star_x/phi_star - (f_x/f)**(1/delta)*(tau**((sigma-1)/delta)),
+        (1-phi_star/phi_upper)*(f*((phi_tilde/phi_star)**delta)-f)+(1-phi_star_x/phi_upper)*(f_x*((phi_tilde_x/phi_star_x)**delta)-f_x) - theta*f_e
     )
 
 ### Solve it
-w, x, y, z =  fsolve(equations, [1, 1, 1, 1])
+w, x, y, z=  fsolve(equations, [1, 1, 1, 1])
 
 ### What are the parameters
 print(equations((w, x, y, z)))
@@ -76,20 +74,18 @@ sigma = 2
 alpha = 0.8
 tau = 2.0
 h = 2.0
-e = 8.0
+e = 1.0
 
 def gamma(a,b):
     x = (h/a)*(((1-alpha)/alpha))*(h/e)**(1-alpha) + (e/a)*(((1-alpha)/alpha))*(h/e)**alpha
     y = (h/b)*(((1-alpha)/alpha))*(h/e)**(1-alpha) + (e/b)*(((1-alpha)/alpha))*(h/e)**alpha
     return (x/y)**(1-sigma)
 
-x = gamma(1.0,2.0)
-
 def eq_labor_mobility(p):
     phi_star, phi_star_x, phi_tilde, phi_tilde_x = p
     return (
-        phi_tilde - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star, phi_upper)[0])**(1/(sigma-1)),
-        phi_tilde_x - (integrate.quad(lambda x: mu(x)*x**(sigma-1), phi_star_x, phi_upper)[0])**(1/(sigma-1)),
+        phi_tilde - (integrate.quad(lambda x: 1/(phi_upper - phi_star)*x**(sigma-1), phi_star, phi_upper)[0])**(1/(sigma-1)),
+        phi_tilde_x - (integrate.quad(lambda x: 1/(phi_upper - phi_star_x)*x**(sigma-1), phi_star_x, phi_upper)[0])**(1/(sigma-1)),
         (1-phi_star/100)*(1/gamma(phi_star, phi_tilde) - 1)*f + (1-phi_star_x/100)*(1/gamma(phi_star_x, phi_tilde_x) - 1)*f_x - theta*f_e,
         gamma(phi_star_x, phi_star) - tau**(sigma-1)*(f_x/f)
     )
@@ -114,10 +110,10 @@ for i in t:
     f_e = 2
     theta = 0.5
     sigma = 2
-    alpha = 0.5
+    alpha = 0.8
     tau = i
     h = 2.0
-    e = 8.0
+    e = 1.0
     w, x, y, z =  fsolve(eq_labor_mobility, (1,1,1,1))
     op_phi_star[count] = w
     op_phi_star_x[count] = x
@@ -143,7 +139,3 @@ axs[1,1].set_xlabel('$\\tau$', fontsize=13)
 axs[1,1].set_ylabel('$\\tilde{\phi}_x$',rotation=0, labelpad=11, fontsize=13)
 fig.tight_layout()
 fig.savefig('labor_mobility_sim.pdf')
-
-
-
-
