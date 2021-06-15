@@ -100,8 +100,9 @@ w, x, y, z =  fsolve(eq_labor_mobility, [1, 1, 1, 1])
 ### What are the parameters
 print(eq_labor_mobility((w, x, y, z)))
 
+
 ### Plot range of tau with exporting threshold
-t = np.linspace(1,10,50)
+t = np.linspace(1,2.5,50)
 threshold_star_x = np.empty(len(t))
 count=0
 for i in t:
@@ -115,6 +116,9 @@ for i in t:
     h = 2.0
     e = 1.0
     w, x, y, z =  fsolve(eq_labor_mobility, (1,1,1,1))
+    threshold_star_x[count] = w
+    threshold_star_x[count] = w
+    threshold_star_x[count] = w
     threshold_star_x[count] = x
     count += 1
     
