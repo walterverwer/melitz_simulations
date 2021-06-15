@@ -17,7 +17,7 @@ sigma = 2
 alpha = 0.7
 tau = 2.0
 
-delta = (1-sigma)/(sigma*(1-alpha)-alpha)
+delta = (1-sigma)/(sigma*(alpha-1)-alpha)
 
 ## uniform distribution parameters (0,100)
 phi_upper = 100 # upperbar
@@ -35,7 +35,7 @@ def equations(p):
     )
 
 ### Solve it
-w, x, y, z =  fsolve(equations, [10, 20, 50, 60])
+w, x, y, z =  fsolve(equations, [1,1,1,1])
 
 ### What are the parameters
 print(equations((w, x, y, z)))
