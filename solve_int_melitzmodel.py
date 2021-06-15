@@ -76,7 +76,7 @@ sigma = 2
 alpha = 0.8
 tau = 2.0
 h = 2.0
-e = 1.0
+e = 8.0
 
 def gamma(a,b):
     x = (h/a)*(((1-alpha)/alpha))*(h/e)**(1-alpha) + (e/a)*(((1-alpha)/alpha))*(h/e)**alpha
@@ -114,10 +114,10 @@ for i in t:
     f_e = 2
     theta = 0.5
     sigma = 2
-    alpha = 0.8
+    alpha = 0.5
     tau = i
     h = 2.0
-    e = 1.0
+    e = 8.0
     w, x, y, z =  fsolve(eq_labor_mobility, (1,1,1,1))
     op_phi_star[count] = w
     op_phi_star_x[count] = x
