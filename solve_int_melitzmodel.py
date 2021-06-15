@@ -103,7 +103,10 @@ print(eq_labor_mobility((w, x, y, z)))
 
 ### Plot range of tau with exporting threshold
 t = np.linspace(1,2.5,50)
-threshold_star_x = np.empty(len(t))
+op_phi_star = np.empty(len(t))
+op_phi_star_x = np.empty(len(t))
+op_phi_tilde = np.empty(len(t))
+op_phi_tilde_x = np.empty(len(t))
 count=0
 for i in t:
     f = 1
@@ -116,16 +119,30 @@ for i in t:
     h = 2.0
     e = 1.0
     w, x, y, z =  fsolve(eq_labor_mobility, (1,1,1,1))
-    threshold_star_x[count] = w
-    threshold_star_x[count] = w
-    threshold_star_x[count] = w
-    threshold_star_x[count] = x
+    op_phi_star[count] = w
+    op_phi_star_x[count] = x
+    op_phi_tilde[count] = y
+    op_phi_tilde_x[count] = z
     count += 1
     
-plt.plot(t,threshold_star_x)
-plt.ylabel('$\\phi^*_x$')
-plt.xlabel('$\\tau$')
-plt.title('Export Threshold Labor Mobility')
+fig, axs = plt.subplots(2,2)
+axs[0,0].plot(t, op_phi_star)
+axs[0,0].set_ylabel('$\phi^*$',rotation=0,labelpad=10)
+axs[0,0].set_xlabel('$\\tau$')
+
+axs[0,1].plot(t, op_phi_star_x)
+axs[0,1].set_xlabel('$\\tau$')
+axs[0,1].set_ylabel('$\phi^*_x$',rotation=0,labelpad=10)
+
+axs[1,0].plot(t, op_phi_tilde)
+axs[1,0].set_xlabel('$\\tau$')
+axs[1,0].set_ylabel('$\\tilde{\phi}$',rotation=0,labelpad=10)
+
+axs[1,1].plot(t, op_phi_tilde_x)
+axs[1,1].set_xlabel('$\\tau$')
+axs[1,1].set_ylabel('$\\tilde{\phi}_x$',rotation=0,labelpad=10)
+fig.savefig('labor_mobility_sim.png')
+
 
 
 
