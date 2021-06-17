@@ -63,7 +63,7 @@ plt.ylabel('$\\phi^*_x$')
 plt.xlabel('$\\tau$')
 
 
-#%% Equilibrium Labor Mobility
+#%% Equilibrium with Labor Mobility
 
 ### Parameter setup
 f = 1
@@ -97,45 +97,306 @@ w, x, y, z =  fsolve(eq_labor_mobility, [1, 1, 1, 1])
 print(eq_labor_mobility((w, x, y, z)))
 
 
-### Plot range of tau with exporting threshold
-t = np.linspace(1,2.5,50)
-op_phi_star = np.empty(len(t))
-op_phi_star_x = np.empty(len(t))
-op_phi_tilde = np.empty(len(t))
-op_phi_tilde_x = np.empty(len(t))
+#%% Equilibrium comparison for tau
+
+# Info: LM := labor mobility case; WO:= without labor mobility
+
+# Parameters (trade costs will vary)
+f = 1
+f_x = 1
+f_e = 2
+theta = 0.5
+sigma = 2
+alpha = 0.8
+tau = 1.0
+h = 2.0
+e = 1.0
+
+# Define varying trade costs parameters
+t = np.linspace(1,2.5,50) # tau
+
+# Without Labor Mobility (WO)
+WO_phi_star = np.empty(len(t))
+WO_phi_star_x = np.empty(len(t))
+WO_phi_tilde = np.empty(len(t))
+WO_phi_tilde_x = np.empty(len(t))
+
+# With Labor Mobility (LM)
+LM_phi_star = np.empty(len(t))
+LM_phi_star_x = np.empty(len(t))
+LM_phi_tilde = np.empty(len(t))
+LM_phi_tilde_x = np.empty(len(t))
+
+# Tau case
 count=0
 for i in t:
-    f = 1
-    f_x = 1
-    f_e = 2
-    theta = 0.5
-    sigma = 2
-    alpha = 0.8
     tau = i
-    h = 2.0
-    e = 1.0
-    w, x, y, z =  fsolve(eq_labor_mobility, (1,1,1,1))
-    op_phi_star[count] = w
-    op_phi_star_x[count] = x
-    op_phi_tilde[count] = y
-    op_phi_tilde_x[count] = z
-    count += 1
     
+    w, x, y, z =  fsolve(eq_labor_mobility, (1,1,1,1))
+    a, b, c, d =  fsolve(equations, (1,1,1,1))
+    
+    LM_phi_star[count] = w
+    LM_phi_star_x[count] = x
+    LM_phi_tilde[count] = y
+    LM_phi_tilde_x[count] = z
+    
+    WO_phi_star[count] = a
+    WO_phi_star_x[count] = b
+    WO_phi_tilde[count] = c
+    WO_phi_tilde_x[count] = d
+    
+    count += 1
+
 fig, axs = plt.subplots(2,2)
-axs[0,0].plot(t, op_phi_star)
+axs[0,0].plot(t, LM_phi_star)
+axs[0,0].plot(t, WO_phi_star)
 axs[0,0].set_ylabel('$\phi^*$',rotation=0, labelpad=11, fontsize=13)
 axs[0,0].set_xlabel('$\\tau$', fontsize=13)
 
-axs[0,1].plot(t, op_phi_star_x)
+axs[0,1].plot(t, LM_phi_star_x)
+axs[0,1].plot(t, WO_phi_star_x)
 axs[0,1].set_xlabel('$\\tau$', fontsize=13)
 axs[0,1].set_ylabel('$\phi^*_x$',rotation=0, labelpad=11, fontsize=13)
 
-axs[1,0].plot(t, op_phi_tilde)
+axs[1,0].plot(t, LM_phi_tilde)
+axs[1,0].plot(t, WO_phi_tilde)
 axs[1,0].set_xlabel('$\\tau$', fontsize=13)
 axs[1,0].set_ylabel('$\\tilde{\phi}$',rotation=0,  labelpad=11, fontsize=13)
 
-axs[1,1].plot(t, op_phi_tilde_x)
+axs[1,1].plot(t, LM_phi_tilde_x)
+axs[1,1].plot(t, WO_phi_tilde_x)
 axs[1,1].set_xlabel('$\\tau$', fontsize=13)
 axs[1,1].set_ylabel('$\\tilde{\phi}_x$',rotation=0, labelpad=11, fontsize=13)
 fig.tight_layout()
-fig.savefig('labor_mobility_sim.pdf')
+fig.savefig('comp_tau.pdf')
+
+
+
+#%% Equilibrium comparison for f
+
+# Info: LM := labor mobility case; WO:= without labor mobility
+
+# Parameters (trade costs will vary)
+f = 1
+f_x = 1
+f_e = 2
+theta = 0.5
+sigma = 2
+alpha = 0.8
+tau = 1.0
+h = 2.0
+e = 1.0
+
+# Define varying trade costs parameters
+fee = np.linspace(1,2.5,50) # f
+
+# Without Labor Mobility (WO)
+WO_phi_star = np.empty(len(t))
+WO_phi_star_x = np.empty(len(t))
+WO_phi_tilde = np.empty(len(t))
+WO_phi_tilde_x = np.empty(len(t))
+
+# With Labor Mobility (LM)
+LM_phi_star = np.empty(len(t))
+LM_phi_star_x = np.empty(len(t))
+LM_phi_tilde = np.empty(len(t))
+LM_phi_tilde_x = np.empty(len(t))
+
+# Tau case
+count=0
+for i in fee:
+    f = i
+    
+    w, x, y, z =  fsolve(eq_labor_mobility, (1,1,1,1))
+    a, b, c, d =  fsolve(equations, (1,1,1,1))
+    
+    LM_phi_star[count] = w
+    LM_phi_star_x[count] = x
+    LM_phi_tilde[count] = y
+    LM_phi_tilde_x[count] = z
+    
+    WO_phi_star[count] = a
+    WO_phi_star_x[count] = b
+    WO_phi_tilde[count] = c
+    WO_phi_tilde_x[count] = d
+    
+    count += 1
+
+fig, axs = plt.subplots(2,2)
+axs[0,0].plot(t, LM_phi_star)
+axs[0,0].plot(t, WO_phi_star)
+axs[0,0].set_ylabel('$\phi^*$',rotation=0, labelpad=11, fontsize=13)
+axs[0,0].set_xlabel('$f$', fontsize=13)
+
+axs[0,1].plot(t, LM_phi_star_x)
+axs[0,1].plot(t, WO_phi_star_x)
+axs[0,1].set_xlabel('$f$', fontsize=13)
+axs[0,1].set_ylabel('$\phi^*_x$',rotation=0, labelpad=11, fontsize=13)
+
+axs[1,0].plot(t, LM_phi_tilde)
+axs[1,0].plot(t, WO_phi_tilde)
+axs[1,0].set_xlabel('$f$', fontsize=13)
+axs[1,0].set_ylabel('$\\tilde{\phi}$',rotation=0,  labelpad=11, fontsize=13)
+
+axs[1,1].plot(t, LM_phi_tilde_x)
+axs[1,1].plot(t, WO_phi_tilde_x)
+axs[1,1].set_xlabel('$f$', fontsize=13)
+axs[1,1].set_ylabel('$\\tilde{\phi}_x$',rotation=0, labelpad=11, fontsize=13)
+fig.tight_layout()
+fig.savefig('comp_fee.pdf')
+
+#%% Equilibrium comparison for f_x
+
+# Info: LM := labor mobility case; WO:= without labor mobility
+
+# Parameters (trade costs will vary)
+f = 1
+f_x = 1
+f_e = 2
+theta = 0.5
+sigma = 2
+alpha = 0.8
+tau = 1.0
+h = 2.0
+e = 1.0
+
+# Define varying trade costs parameters
+fee_x = np.linspace(1,2.5,50) # f_x
+
+# Without Labor Mobility (WO)
+WO_phi_star = np.empty(len(t))
+WO_phi_star_x = np.empty(len(t))
+WO_phi_tilde = np.empty(len(t))
+WO_phi_tilde_x = np.empty(len(t))
+
+# With Labor Mobility (LM)
+LM_phi_star = np.empty(len(t))
+LM_phi_star_x = np.empty(len(t))
+LM_phi_tilde = np.empty(len(t))
+LM_phi_tilde_x = np.empty(len(t))
+
+# Tau case
+count=0
+for i in fee_x:
+    f_x = i
+    
+    w, x, y, z =  fsolve(eq_labor_mobility, (1,1,1,1))
+    a, b, c, d =  fsolve(equations, (1,1,1,1))
+    
+    LM_phi_star[count] = w
+    LM_phi_star_x[count] = x
+    LM_phi_tilde[count] = y
+    LM_phi_tilde_x[count] = z
+    
+    WO_phi_star[count] = a
+    WO_phi_star_x[count] = b
+    WO_phi_tilde[count] = c
+    WO_phi_tilde_x[count] = d
+    
+    count += 1
+
+fig, axs = plt.subplots(2,2)
+axs[0,0].plot(t, LM_phi_star)
+axs[0,0].plot(t, WO_phi_star)
+axs[0,0].set_ylabel('$\phi^*$',rotation=0, labelpad=11, fontsize=13)
+axs[0,0].set_xlabel('$f_x$', fontsize=13)
+
+axs[0,1].plot(t, LM_phi_star_x)
+axs[0,1].plot(t, WO_phi_star_x)
+axs[0,1].set_xlabel('$f_x$', fontsize=13)
+axs[0,1].set_ylabel('$\phi^*_x$',rotation=0, labelpad=11, fontsize=13)
+
+axs[1,0].plot(t, LM_phi_tilde)
+axs[1,0].plot(t, WO_phi_tilde)
+axs[1,0].set_xlabel('$f_x$', fontsize=13)
+axs[1,0].set_ylabel('$\\tilde{\phi}$',rotation=0,  labelpad=11, fontsize=13)
+
+axs[1,1].plot(t, LM_phi_tilde_x)
+axs[1,1].plot(t, WO_phi_tilde_x)
+axs[1,1].set_xlabel('$f_x$', fontsize=13)
+axs[1,1].set_ylabel('$\\tilde{\phi}_x$',rotation=0, labelpad=11, fontsize=13)
+fig.tight_layout()
+fig.savefig('comp_fee_x.pdf')
+
+
+#%% Equilibrium comparison for f_e
+
+
+
+# Info: LM := labor mobility case; WO:= without labor mobility
+
+# Parameters (trade costs will vary)
+f = 1
+f_x = 1
+f_e = 2
+theta = 0.5
+sigma = 2
+alpha = 0.8
+tau = 1.0
+h = 2.0
+e = 1.0
+
+# Define varying trade costs parameters
+fee_e = np.linspace(1,2.5,50) # f_e
+
+# Without Labor Mobility (WO)
+WO_phi_star = np.empty(len(t))
+WO_phi_star_x = np.empty(len(t))
+WO_phi_tilde = np.empty(len(t))
+WO_phi_tilde_x = np.empty(len(t))
+
+# With Labor Mobility (LM)
+LM_phi_star = np.empty(len(t))
+LM_phi_star_x = np.empty(len(t))
+LM_phi_tilde = np.empty(len(t))
+LM_phi_tilde_x = np.empty(len(t))
+
+# Tau case
+count=0
+for i in fee_e:
+    f_x = i
+    
+    w, x, y, z =  fsolve(eq_labor_mobility, (1,1,1,1))
+    a, b, c, d =  fsolve(equations, (1,1,1,1))
+    
+    LM_phi_star[count] = w
+    LM_phi_star_x[count] = x
+    LM_phi_tilde[count] = y
+    LM_phi_tilde_x[count] = z
+    
+    WO_phi_star[count] = a
+    WO_phi_star_x[count] = b
+    WO_phi_tilde[count] = c
+    WO_phi_tilde_x[count] = d
+    
+    count += 1
+
+fig, axs = plt.subplots(2,2)
+axs[0,0].plot(t, LM_phi_star)
+axs[0,0].plot(t, WO_phi_star)
+axs[0,0].set_ylabel('$\phi^*$',rotation=0, labelpad=11, fontsize=13)
+axs[0,0].set_xlabel('$f_e$', fontsize=13)
+
+axs[0,1].plot(t, LM_phi_star_x)
+axs[0,1].plot(t, WO_phi_star_x)
+axs[0,1].set_xlabel('$f_e$', fontsize=13)
+axs[0,1].set_ylabel('$\phi^*_x$',rotation=0, labelpad=11, fontsize=13)
+
+axs[1,0].plot(t, LM_phi_tilde)
+axs[1,0].plot(t, WO_phi_tilde)
+axs[1,0].set_xlabel('$f_e$', fontsize=13)
+axs[1,0].set_ylabel('$\\tilde{\phi}$',rotation=0,  labelpad=11, fontsize=13)
+
+axs[1,1].plot(t, LM_phi_tilde_x)
+axs[1,1].plot(t, WO_phi_tilde_x)
+axs[1,1].set_xlabel('$f_e$', fontsize=13)
+axs[1,1].set_ylabel('$\\tilde{\phi}_x$',rotation=0, labelpad=11, fontsize=13)
+fig.tight_layout()
+fig.savefig('comp_fee_e.pdf')
+
+
+
+
+
+
+
