@@ -19,7 +19,7 @@ tau = 2.0
 delta = (1-sigma)/(sigma*(alpha-1)-alpha)
 
 ## uniform distribution parameters (0,100)
-phi_upper = 50 # upperbar
+phi_upper = 100 # upperbar
 
 
 ### Equilibrium conditions
@@ -195,25 +195,25 @@ fig.savefig('comp_tau_diff.pdf')
 
 
 # Hypotheses:
-fig, axs = plt.subplots(2,2)
+fig, axs = plt.subplots(2,2, constrained_layout=True)
 axs[0,0].plot(t, LM_phi_tilde - WO_phi_tilde)
-axs[0,0].set_ylabel('$\Delta\\tilde{\phi}$',rotation=0, labelpad=18, fontsize=13)
+axs[0,0].set_ylabel('$\Delta\\tilde{\phi}$',rotation=0, labelpad=11, fontsize=13)
 axs[0,0].set_xlabel('$\\tau$', fontsize=13)
 axs[0,0].title.set_text('Hypothesis 1')
 
 axs[0,1].plot(t, LM_phi_tilde_x - WO_phi_tilde_x)
 axs[0,1].set_xlabel('$\\tau$', fontsize=13)
-axs[0,1].set_ylabel('$\Delta\\tilde{\phi}_x$',rotation=0, labelpad=18, fontsize=13)
+axs[0,1].set_ylabel('$\Delta\\tilde{\phi}_x$',rotation=0, labelpad=11, fontsize=13)
 axs[0,1].title.set_text('Hypothesis 2')
 
 axs[1,0].plot(t, (LM_phi_star_x / LM_phi_star) - (WO_phi_star_x / WO_phi_star))
 axs[1,0].set_xlabel('$\\tau$', fontsize=13)
-axs[1,0].set_ylabel('$\Delta\\left(\\frac{\phi^*_x}{\phi^*}\\right)$',rotation=0,  labelpad=18, fontsize=13)
+axs[1,0].set_ylabel('$\Delta\\left(\\frac{\phi^*_x}{\phi^*}\\right)$',rotation=0,  labelpad=21, fontsize=13)
 axs[1,0].title.set_text('Hypothesis 3')
 
 axs[1,1].plot(t, (LM_phi_tilde - WO_phi_tilde) - (LM_phi_tilde_x - WO_phi_tilde_x))
 axs[1,1].set_xlabel('$\\tau$', fontsize=13)
-axs[1,1].set_ylabel('$\Delta\\tilde{\phi}_x$',rotation=0, labelpad=18, fontsize=13)
+axs[1,1].set_ylabel('$\Delta\\tilde{\phi} - \Delta\\tilde{\phi}_x$',rotation=0, labelpad=30, fontsize=13)
 axs[1,1].title.set_text('Hypothesis 4')
 
 fig.tight_layout()
