@@ -13,7 +13,7 @@ f = 1
 f_x = 1
 f_e = 2
 theta = 0.5
-sigma = 2
+sigma = 2.5
 alpha = 0.7
 tau = 2.0
 delta = (1-sigma)/(sigma*(alpha-1)-alpha)
@@ -77,8 +77,8 @@ h = 2.0
 e = 1.0
 
 def gamma(a,b):
-    x = (h/a)*(((1-alpha)/alpha))*(h/e)**(1-alpha) + (e/a)*(((1-alpha)/alpha))*(h/e)**alpha
-    y = (h/b)*(((1-alpha)/alpha))*(h/e)**(1-alpha) + (e/b)*(((1-alpha)/alpha))*(h/e)**alpha
+    x = (h/a)*((((1-alpha)/alpha))*(h/e))**(alpha-1) + (e/a)*((((1-alpha)/alpha))*(h/e))**alpha
+    y = (h/b)*((((1-alpha)/alpha))*(h/e))**(alpha-1) + (e/b)*((((1-alpha)/alpha))*(h/e))**alpha
     return (x/y)**(1-sigma)
 
 def eq_labor_mobility(p):
